@@ -7,7 +7,8 @@ student report cards as PDFs.
 
 ## Run it
 
-You need **PHP 8.2+** and **[Composer](https://getcomposer.org)**. Then:
+You need **PHP 8.2+** and **[Composer](https://getcomposer.org)**. On a Mac: `brew install php composer`.
+On Windows, [Laravel Herd](https://herd.laravel.com) installs both. Then run, one line at a time:
 
 ```bash
 git clone https://github.com/reshard-porter/Laravel-LMS.git
@@ -15,10 +16,13 @@ cd Laravel-LMS
 composer install
 cp .env.example .env
 php artisan key:generate
-touch database/database.sqlite        # Windows: type nul > database\database.sqlite
-php artisan migrate --seed            # creates the tables and a demo school
+touch database/database.sqlite
+php artisan migrate --seed
 php artisan serve
 ```
+
+`migrate --seed` creates the tables and a demo school. On Windows (Command Prompt), use
+`copy .env.example .env` and `type nul > database\database.sqlite` instead of the `cp` and `touch` lines.
 
 Open **http://127.0.0.1:8000** and sign in:
 
@@ -76,11 +80,12 @@ attendance and missing work, plus a breakdown of each assignment. **Report card*
 
 ## Useful commands
 
-```bash
-php artisan migrate:fresh --seed   # reset to a fresh demo school
-php vendor/bin/phpunit             # run the 29 automated tests
-composer install                   # only needed if you delete vendor/
-```
+| Command | What it does |
+|---|---|
+| `php artisan serve` | Starts the app at http://127.0.0.1:8000 (Ctrl+C stops it) |
+| `php artisan migrate:fresh --seed` | Resets to a fresh demo school |
+| `php vendor/bin/phpunit` | Runs the 29 automated tests |
+| `composer install` | Re-run after pulling changes to `composer.lock` |
 
 The demo school is generated relative to today's date, so after a reset it always looks mid-term: past
 work is graded, one assignment is half-graded, and some work is still upcoming.
@@ -90,7 +95,11 @@ work is graded, one assignment is half-graded, and some work is still upcoming.
 ```
 LMS_SCHOOL_NAME="Innovation Learning Center"
 LMS_CURRENT_TERM="Fall 2026"
+APP_TIMEZONE=America/Jamaica
 ```
+
+`APP_TIMEZONE` decides what "today" is: the dashboard date and greeting, and when work counts as due or
+overdue. Use your school's [timezone name](https://www.php.net/manual/en/timezones.php).
 
 ### Using MySQL instead of SQLite
 
